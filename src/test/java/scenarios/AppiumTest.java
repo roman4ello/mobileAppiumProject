@@ -1,22 +1,20 @@
 package scenarios;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 
 public class AppiumTest extends AndroidSetup {
 
+
     @BeforeClass
     public void setUp() throws Exception {
         prepareAndroidForAppium();
     }
 
-    @AfterClass
+    //    @AfterClass
     public void tearDown() throws Exception {
         driver.quit();
     }
@@ -34,21 +32,42 @@ public class AppiumTest extends AndroidSetup {
         waitForVisibilityOf(firstSignIn);
 
         driver.findElement(firstSignIn).click();
-
-        driver.findElement(userEmail).sendKeys("test@mail.com");
-        driver.findElement(userPassword).sendKeys("password123");
+        driver.findElement(userEmail).sendKeys("br777roman@gmail.com");
+        driver.findElement(userPassword).sendKeys("1478965roman");
 
         driver.findElement(showButton).click();
 
         //Checking if the "SHOW" button works right
         String typedPass = driver.findElement(userPassword).getText();
-        Assert.assertEquals(typedPass, "password123");
+        Assert.assertEquals(typedPass, "1478965roman");
 
     }
 
-    protected void waitForVisibilityOf(By locator) {
 
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    @Test
+    public void writeMessageTest() {
+
+
+        boolean flag = login(fields.user, fields.password);
+        Assert.assertEquals(flag, true);
+
+          flag = people();
+        //проверка того что отработала иконка главного меню "контакты", но еще мы не в вконтактах
+        Assert.assertEquals(flag, true);
+
+          flag = contacts();
+        //проверили что мы уже в контактах
+        Assert.assertEquals(flag, true);
+
+          flag = openTheContact();
+        //проверили что мы уже в искомом контакте
+        Assert.assertEquals(flag, true);
+
+          flag = writeTheMessage(fields.message_to_user);
+        // icon_message_to_user = message
+        Assert.assertEquals(flag, true);
+
     }
+
+
 }
